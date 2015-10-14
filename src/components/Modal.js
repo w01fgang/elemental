@@ -1,8 +1,9 @@
-import React from 'react/addons';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Transition from 'react-addons-css-transition-group';
 import blacklist from 'blacklist';
 import classNames from 'classnames';
 
-const Transition = React.addons.CSSTransitionGroup;
 const TransitionPortal = React.createClass({
 	displayName: 'TransitionPortal',
 	portalElement: null,
@@ -17,7 +18,7 @@ const TransitionPortal = React.createClass({
 		document.body.removeChild(this.portalElement);
 	},
 	componentDidUpdate() {
-		React.render(<Transition {...this.props}>{this.props.children}</Transition>, this.portalElement);
+		ReactDOM.render(<Transition {...this.props}>{this.props.children}</Transition>, this.portalElement);
 	}
 });
 
@@ -72,10 +73,10 @@ module.exports = React.createClass({
 
 		return (
 			<div>
-				<TransitionPortal {...props} data-modal="true" className={className} onClick={this.handleModalClick} transitionName="Modal-dialog" component="div">
+				<TransitionPortal {...props} data-modal="true" className={className} onClick={this.handleModalClick} transitionName="Modal-dialog" transitionEnterTimeout={260} transitionLeaveTimeout={140} component="div">
 					{this.renderDialog()}
 				</TransitionPortal>
-				<TransitionPortal transitionName="Modal-background" component="div">
+				<TransitionPortal transitionName="Modal-background" transitionEnterTimeout={140} transitionLeaveTimeout={240} component="div">
 					{this.renderBackdrop()}
 				</TransitionPortal>
 			</div>
