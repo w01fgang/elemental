@@ -1,6 +1,6 @@
 {
   "name": "elemental",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "React UI Framework",
   "main": "lib/Elemental.js",
   "author": "Jed Watson",
@@ -26,7 +26,9 @@
     "react-router": "1.0.0-rc3"
   },
   "peerDependencies": {
-    "react": "^0.14.0"
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
+    "react-addons-css-transition-group": "^0.14.0"
   },
   "browserify-shim": {
     "react": "global:React"
