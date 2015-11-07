@@ -15,7 +15,7 @@ const NavItems = [
 	// { value: 'date-picker', label: 'Date Picker' }
 ];
 
-var PageNav = React.createClass({
+const PageNav = React.createClass({
 	getInitialState () {
 		return {
 			mobileMenuIsVisible: false,
@@ -23,35 +23,30 @@ var PageNav = React.createClass({
 			windowWidth: window.innerWidth
 		};
 	},
-
 	componentDidMount () {
 		window.addEventListener('resize', this.handleResize);
 	},
-
 	componentWillUnmount () {
 		window.removeEventListener('resize', this.handleResize);
 	},
-
 	handleResize () {
 		this.setState({
 			windowHeight: window.innerHeight,
 			windowWidth: window.innerWidth
 		});
 	},
-
 	toggleMenu () {
 		this.setState({
 			mobileMenuIsVisible: !this.state.mobileMenuIsVisible
 		});
 	},
-
 	render () {
 		var self = this;
 		var height = (this.state.windowWidth < 768) ? this.state.windowHeight : 'auto';
 		var menuClass = this.state.mobileMenuIsVisible ? 'primary-nav-menu is-visible' : 'primary-nav-menu is-hidden';
 		var menuItems = NavItems.map(function(item) {
 			return (
-				<Link key={item.value} className="primary-nav__item" onClick={self.toggleMenu} to={item.value}>
+				<Link key={item.value} className="primary-nav__item" activeClassName="active" onClick={self.toggleMenu} to={item.value}>
 					<span className="primary-nav__item-inner">{item.label}</span>
 				</Link>
 			);
@@ -79,7 +74,7 @@ var PageNav = React.createClass({
 	}
 });
 
-var App = React.createClass({
+const App = React.createClass({
 	render () {
 		return (
 			<div className="page-wrapper">
@@ -97,30 +92,24 @@ var App = React.createClass({
 	}
 });
 
-var basepath = (window.location.pathname.slice(0, 10) === '/elemental') ? '/elemental' : '';
+const basepath = (window.location.pathname.slice(0, 10) === '/elemental') ? '/elemental' : '';
+const history = createHistory();
 
-var routes = (
-	<Route path="/" component={App}>
-		<IndexRoute component={require('./pages/Home')} />
-		<Route path="home" component={require('./pages/Home')} />
-		<Route path="css" component={require('./pages/CSS')} />
-		<Route path="grid" component={require('./pages/Grid')} />
-		<Route path="buttons" component={require('./pages/Buttons')} />
-		<Route path="glyphs" component={require('./pages/Glyphs')} />
-		<Route path="forms" component={require('./pages/Forms')} />
-		<Route path="spinner" component={require('./pages/Spinner')} />
-		<Route path="modal" component={require('./pages/Modal')} />
-		<Route path="misc" component={require('./pages/Misc')} />
-		<Route path="*" component={require('./pages/Home')} />
-	</Route>
+ReactDOM.render(
+	<Router history={history} onUpdate={() => window.scrollTo(0, 0)}>
+		<Route path="/" component={App}>
+			<IndexRoute component={require('./pages/Home')} />
+			<Route path="home" component={require('./pages/Home')} />
+			<Route path="css" component={require('./pages/CSS')} />
+			<Route path="grid" component={require('./pages/Grid')} />
+			<Route path="buttons" component={require('./pages/Buttons')} />
+			<Route path="glyphs" component={require('./pages/Glyphs')} />
+			<Route path="forms" component={require('./pages/Forms')} />
+			<Route path="spinner" component={require('./pages/Spinner')} />
+			<Route path="modal" component={require('./pages/Modal')} />
+			<Route path="misc" component={require('./pages/Misc')} />
+			<Route path="*" component={require('./pages/Home')} />
+		</Route>
+	</Router>,
+	document.getElementById('app')
 );
-
-//{/*<Router.Route name="date-picker" path={basepath + '/date-picker'} handler={require('./pages/DatePicker')} />*/}
-
-//Router.run(routes, Router.HistoryLocation, function (Handler) {
-//	React.render(<Handler/>, document.body);
-//});
-
-let history = createHistory();
-
-ReactDOM.render(<Router history={history}>{routes}</Router>, document.getElementById('app'));
