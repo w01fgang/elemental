@@ -20,8 +20,12 @@ const BUTTON_TYPES = [
 	'danger',
 	'link',
 	'link-text',
+	'link-primary',
+	'link-success',
+	'link-warning',
+	'link-danger',
 	'link-cancel',
-	'link-delete'
+	'link-delete',
 ];
 
 module.exports = React.createClass({
@@ -29,19 +33,19 @@ module.exports = React.createClass({
 	propTypes: {
 		block: React.PropTypes.bool,
 		className: React.PropTypes.string,
+		component: React.PropTypes.element,
 		href: React.PropTypes.string,
-		component: React.PropTypes.node,
 		isActive: React.PropTypes.bool,
 		size: React.PropTypes.oneOf(BUTTON_SIZES),
 		submit: React.PropTypes.bool,
-		type: React.PropTypes.oneOf(BUTTON_TYPES)
+		type: React.PropTypes.oneOf(BUTTON_TYPES),
 	},
-	getDefaultProps() {
+	getDefaultProps () {
 		return {
-			type: 'default'
+			type: 'default',
 		};
 	},
-	render() {
+	render () {
 		// classes
 		var componentClass = classNames(
 			'Button',
@@ -55,7 +59,7 @@ module.exports = React.createClass({
 		);
 
 		// props
-		var props = blacklist(this.props, 'type', 'size', 'component', 'className');
+		var props = blacklist(this.props, 'type', 'size', 'component', 'className', 'submit');
 		props.className = componentClass;
 
 		if (this.props.component) {
@@ -71,5 +75,5 @@ module.exports = React.createClass({
 		}
 
 		return React.createElement(tag, props, this.props.children);
-	}
+	},
 });

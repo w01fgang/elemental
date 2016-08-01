@@ -7,7 +7,7 @@ var ALERT_TYPES = [
 	'info',
 	'primary',
 	'success',
-	'warning'
+	'warning',
 ];
 
 module.exports = React.createClass({
@@ -15,9 +15,9 @@ module.exports = React.createClass({
 	propTypes: {
 		children: React.PropTypes.node.isRequired,
 		className: React.PropTypes.string,
-		type: React.PropTypes.oneOf(ALERT_TYPES).isRequired
+		type: React.PropTypes.oneOf(ALERT_TYPES).isRequired,
 	},
-	render() {
+	render () {
 		var componentClass = classNames(
 			'Alert',
 			'Alert--' + this.props.type,
@@ -25,5 +25,5 @@ module.exports = React.createClass({
 		);
 
 		return <div className={componentClass}>{this.props.children}</div>;
-	}
+	},
 });

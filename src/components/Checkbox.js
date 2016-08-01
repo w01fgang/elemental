@@ -4,31 +4,27 @@ const React = require('react');
 
 const Checkbox = React.createClass({
 	propTypes: {
+		autoFocus: React.PropTypes.bool,
 		className: React.PropTypes.string,
 		disabled: React.PropTypes.bool,
-		autofocus: React.PropTypes.bool,
 		indeterminate: React.PropTypes.bool,
 		inline: React.PropTypes.bool,
 		label: React.PropTypes.string,
 		style: React.PropTypes.object,
 		title: React.PropTypes.string,
 	},
-
 	componentDidMount () {
-		if (this.props.autofocus) {
+		if (this.props.autoFocus) {
 			this.refs.target.focus();
 		}
 		this.setIndeterminate(this.props.indeterminate);
 	},
-
 	componentWillReceiveProps (nextProps) {
 		this.setIndeterminate(nextProps.indeterminate);
 	},
-
 	setIndeterminate (value) {
 		this.refs.target.indeterminate = value;
 	},
-
 	render() {
 		let componentClass = classNames('Checkbox', {
 			'Checkbox--disabled': this.props.disabled,
@@ -41,7 +37,7 @@ const Checkbox = React.createClass({
 				{this.props.label && <span className="Checkbox__label">{this.props.label}</span>}
 			</label>
 		);
-	}
+	},
 });
 
 module.exports = Checkbox;

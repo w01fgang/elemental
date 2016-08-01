@@ -12,9 +12,9 @@ module.exports = React.createClass({
 		fill: React.PropTypes.oneOf(['danger', 'default', 'muted', 'primary', 'success', 'warning']),
 		icon: React.PropTypes.string,
 		isLoading: React.PropTypes.bool,
-		type: React.PropTypes.string
+		type: React.PropTypes.string,
 	},
-	render() {
+	render () {
 		// classes
 		var className = classNames(
 			'IconField__icon',
@@ -23,13 +23,11 @@ module.exports = React.createClass({
 			(this.props.type ? 'IconField__icon-color--' + this.props.type : null),
 			this.props.className
 		);
-
 		var component = this.props.isLoading ? (
 			<Spinner size="sm" />
 		) : (
 			<div className={className} />
 		);
-
 		return component;
-	}
+	},
 });

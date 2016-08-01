@@ -1,5 +1,63 @@
 # Elemental
 
+## v0.6.0 / 2016-07-26
+
+This release fixes warnings in React 15.2.x, and includes a small breaking change to do with the calitalisation of `autoFocus`.
+
+* fixed; issues with passing unrecognised attributes to DOM elements, which caused warnings in React 15.2.x, thanks to [Monday Chen](https://github.com/mondaychen)
+* fixed; capitalisation inconsistencies with React on the `autoFocus` prop (Focus is now capitalised)
+
+## v0.5.14 / 2016-04-10
+
+Elemental is now compatible with React 15.x.x
+
+* added; Card: CSS is now actual CSS
+* fixed; Pagination: First page appears correctly, thanks [Nuno Campos](https://github.com/nfcampos)
+* fixed; Button: link button variants match other buttons, thanks [Christian Legnitto](https://github.com/LegNeato)
+* fixed; FileDragAndDrop: button now always specifies `type="button"`, thanks [Jinks](https://github.com/JinksPeng)
+
+## v0.5.13 / 2016-02-22
+
+* fixed; FileInput: `onChange` prop fires when file selection is cancelled
+
+## v0.5.12 / 2016-02-16
+
+* fixed; Table className is correctly retained, thanks [Rafee Memon](https://github.com/rafeememon)
+* cleanup; Pagination is now two components (internal)
+* fixed; Pagination: reference error
+* fixed; Button: component propType is element
+* added; Col: now accepts `1` for `100%` width, thanks [Nathan Smith](https://github.com/NogsMPLS)
+* fixed; FileInput: `onChange` prop fires with data, thanks [Cameron Roe](https://github.com/cameronjroe)
+
+## v0.5.11 / 2015-12-29
+
+Accessibility features provided by `ally.js` have been removed from the Modal component for now; they've caused several issues and need a comprehensive review and possibly a different implementation before being reintroduced to the stable version.
+
+## v0.5.10 / 2015-12-22
+
+* fixed? Updated ally.js dependency, next attempt to fix server-side rendering
+
+## v0.5.9 / 2015-12-18
+
+* fixed: Modal component nulls document overflow on close
+* fixed; The Modal component _should_ be safe for server-side rendering
+
+## v0.5.8 / 2015-12-14
+
+* fixed; Accessibility handlers in the Modal component are only bound when the `isOpen` prop changes
+* changed; The `Modal` component will only focus the first element when you tell it to, with the new `autofocusFirstElement` prop
+
+## v0.5.7 / 2015-12-07
+
+* fixed; Pagination component works with even page limits, thanks [Shmavon Gazanchyan](https://github.com/MunGell)
+* added; Accessibility fixes for the `Modal` component, thanks [Jonathan Persson](https://github.com/jonathanp)
+* fixed; Safari style bug in the dropdown component, thanks [Jonathan Persson](https://github.com/jonathanp)
+
+## v0.5.6 / 2015-11-18
+
+* changed; default info colour darkened slightly for better legibility
+* fixed; anchor text colour in alerts
+
 ## v0.5.5 / 2015-11-14
 
 * fixed; Server-side rendering issues with the `Col` component, thanks [Daniil Pokrovsky](https://github.com/danii1)
@@ -40,7 +98,7 @@ Elemental UI is updated for React 0.14. If you're still using React 0.13, please
 * fixed; InputGroup: contiguous section's border behaviour
 * fixed; Dropdown: return value from onSelect (not label)
 * fixed; Dropdown: escape closes menu
-* added; Pagination: new limit prop to limit total number of pages displayed, thanks [Shmavon](https://github.com/MunGell)
+* added; Pagination: new limit prop to limit total number of pages displayed, thanks [Shmavon Gazanchyan](https://github.com/MunGell)
 
 ## v0.4.5 / 2015-09-16
 

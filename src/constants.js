@@ -1,3 +1,10 @@
+var canUseDOM = !!(
+	(typeof window !== 'undefined' &&
+	window.document && window.document.createElement)
+);
+
+exports.canUseDOM = canUseDOM;
+
 // breakpoints
 exports.breakpoint = {
 	xs:              480,
@@ -54,7 +61,9 @@ function denominators (n) {
 	}
 }
 
-exports.fractions = {};
+exports.fractions = {
+	'1': '100%',
+};
 
 for (var numerator = 1; numerator <= 19; numerator++) {
 	denominators(numerator);

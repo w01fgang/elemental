@@ -5,6 +5,7 @@ const classNames = require('classnames');
 const Button = require('./Button');
 
 const ESC_KEYCODE = 27;
+const NO_OP = () => undefined;
 
 module.exports = React.createClass({
 	displayName: 'Dropdown',
@@ -17,18 +18,26 @@ module.exports = React.createClass({
 		className: React.PropTypes.string,
 		isOpen: React.PropTypes.bool,
 		items: React.PropTypes.array.isRequired,
-		onSelect: React.PropTypes.func
+		onSelect: React.PropTypes.func,
 	},
 	getDefaultProps () {
 		return {
 			buttonHasDisclosureArrow: true,
-			onSelect: function() {}
+			onSelect: NO_OP,
 		};
 	},
 	getInitialState () {
 		return {
-			isOpen: this.props.isOpen || false
+			isOpen: this.props.isOpen || false,
 		};
+	},
+	componentWillUpdate (nextProps, nextState) {
+		if (typeof window === 'undefined') return;
+		if (nextState.isOpen) {
+			window.addEventListener('keydown', this.handleKeyDown);
+		} else {
+			window.removeEventListener('keydown', this.handleKeyDown);
+		}
 	},
 	openDropdown () {
 		this.setState({ isOpen: true });
@@ -36,25 +45,16 @@ module.exports = React.createClass({
 	closeDropdown () {
 		this.setState({ isOpen: false });
 	},
-	componentWillUpdate (nextProps, nextState) {
-		if (typeof window === 'undefined') return;		
-		if (nextState.isOpen) {
-			window.addEventListener('keydown', this.handleKeyDown);
-		} else {
-			window.removeEventListener('keydown', this.handleKeyDown);
-		}
-	},
 	handleKeyDown (e) {
 		if (e.keyCode === ESC_KEYCODE) {
 			this.closeDropdown();
 		}
 	},
-
 	renderChildren () {
 		return React.Children.map(this.props.children, (child) => {
 			return React.cloneElement(child, {
 				onClick: this.state.isOpen ? this.closeDropdown : this.openDropdown,
-				className: classNames(child.props.className, 'Dropdown-toggle')
+				className: classNames(child.props.className, 'Dropdown-toggle'),
 			});
 		});
 	},
@@ -68,12 +68,10 @@ module.exports = React.createClass({
 			</Button>
 		);
 	},
-
 	onClick (selectedItem) {
 		this.setState({
-			isOpen: !this.state.isOpen
+			isOpen: !this.state.isOpen,
 		});
-
 		this.props.onSelect(selectedItem);
 	},
 	renderDropdownMenu () {
@@ -106,12 +104,11 @@ module.exports = React.createClass({
 		if (!this.state.isOpen) return null;
 		return <div className="Dropdown-menu-backdrop" onClick={this.closeDropdown} />;
 	},
-
 	render () {
 		// classes
 		var dropdownClass = classNames('Dropdown', {
 			'is-open': this.state.isOpen,
-			'align-right': this.props.alignRight
+			'align-right': this.props.alignRight,
 		}, this.props.className);
 
 		// props
@@ -126,5 +123,5 @@ module.exports = React.createClass({
 				{this.renderDropdownMenuBackground()}
 			</span>
 		);
-	}
+	},
 });

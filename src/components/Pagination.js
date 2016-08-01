@@ -1,18 +1,43 @@
-var React = require('react');
-var classNames = require('classnames');
+const React = require('react');
+const classNames = require('classnames');
+
+const Page = React.createClass({
+	displayName: 'Page',
+	propTypes: {
+		children: React.PropTypes.node,
+		label: React.PropTypes.string,
+		onSelect: React.PropTypes.func,
+		page: React.PropTypes.number,
+		selected: React.PropTypes.bool,
+	},
+	onSelect () {
+		this.props.onSelect(this.props.page);
+	},
+	render () {
+		const { children, selected, label } = this.props;
+		const className = classNames('Pagination__list__item', {
+			'is-selected': selected,
+		});
+		return (
+			<button className={className} onClick={this.onSelect}>
+				{children}
+			</button>
+		);
+	},
+});
 
 module.exports = React.createClass({
 	displayName: 'Pagination',
 	propTypes: {
 		className: React.PropTypes.string,
 		currentPage: React.PropTypes.number.isRequired,
+		limit: React.PropTypes.number,
 		onPageSelect: React.PropTypes.func,
 		pageSize: React.PropTypes.number.isRequired,
 		plural: React.PropTypes.string,
 		singular: React.PropTypes.string,
 		style: React.PropTypes.object,
 		total: React.PropTypes.number.isRequired,
-		limit: React.PropTypes.number
 	},
 	renderCount () {
 		let count = '';
@@ -35,9 +60,10 @@ module.exports = React.createClass({
 			<div className="Pagination__count">{count}</div>
 		);
 	},
-	onPageSelect (i) {
-		if (!this.props.onPageSelect) return;
-		this.props.onPageSelect(i);
+	onPageSelect (page) {
+		if (this.props.onPageSelect) {
+			this.props.onPageSelect(page);
+		}
 	},
 	renderPages () {
 		if (this.props.total <= this.props.pageSize) return null;
@@ -45,50 +71,41 @@ module.exports = React.createClass({
 		let pages = [];
 		let { currentPage, pageSize, total, limit } = this.props;
 		let totalPages = Math.ceil(total / pageSize);
-		let minPage = 0;
+		let minPage = 1;
 		let maxPage = totalPages;
 
 		if (limit && (limit < totalPages)) {
-			limit = Math.floor(limit / 2);
-			minPage = currentPage - limit - 1;
-			maxPage = currentPage + limit;
+			let rightLimit = Math.floor(limit / 2);
+			let leftLimit =  rightLimit + (limit % 2) - 1;
+			minPage = currentPage - leftLimit;
+			maxPage = currentPage + rightLimit;
 
-			if (minPage < 0) {
-				maxPage = maxPage - minPage;
-				minPage = 0;
+			if (minPage < 1) {
+				maxPage = limit;
+				minPage = 1;
 			}
-
 			if (maxPage > totalPages) {
-				minPage = totalPages - 2 * limit - 1;
+				minPage = totalPages - limit + 1;
 				maxPage = totalPages;
 			}
 		}
-
-		if (minPage > 0) {
-			pages.push(<button key={'page_start'} className={'Pagination__list__item'} onClick={() => this.onPageSelect(1)}>...</button>);
+		if (minPage > 1) {
+			pages.push(<Page key="page_start" onSelect={this.onPageSelect} page={1}>...</Page>);
 		}
-
-		for (let i = minPage; i < maxPage; i++) {
-			let page = i + 1;
-			let current = (page === currentPage);
-			let className = classNames('Pagination__list__item', {
-				'is-selected': current
-			});
+		for (let page = minPage; page <= maxPage; page++) {
+			let selected = (page === currentPage);
 			/* eslint-disable no-loop-func */
-			pages.push(<button key={'page_' + page} className={className} onClick={() => this.onPageSelect(page)}>{page}</button>);
+			pages.push(<Page key={'page_' + page} selected={selected} onSelect={this.onPageSelect} page={page}>{page}</Page>);
 			/* eslint-enable */
 		}
-
 		if (maxPage < totalPages) {
-			pages.push(<button key={'page_end'} className={'Pagination__list__item'} onClick={() => this.onPageSelect(totalPages)}>...</button>);
+			pages.push(<Page key="page_end" onSelect={this.onPageSelect} page={totalPages}>...</Page>);
 		}
-
 		return (
 			<div className="Pagination__list">
 				{pages}
 			</div>
 		);
-
 	},
 	render () {
 		var className = classNames('Pagination', this.props.className);
